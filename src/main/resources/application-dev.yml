@@ -1,0 +1,32 @@
+## dev环境使用是配置
+server:
+  port: 8081
+  context-path: /chao
+
+mouth: 11
+day: 12
+##配置使用配置
+time: 2017-${mouth}-${day}
+
+##对象配置
+person:
+  name: 王海潮
+  age: 22
+  address: 小上海
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/springBoot
+    username: root
+    password: 123456
+
+  jpa:
+    hibernate:
+    ##ddl-auto: create table if exists jpa_vo
+    ##ddl-auto: create-drop 应用停下来时候删除
+    ##ddl-auto: update 更新表结构
+      ddl-auto: update
+    show-sql: true
+
+

@@ -1,0 +1,14 @@
+## pro环境使用是配置
+server:
+  port: 8081
+  context-path: /chao
+
+mouth: 11
+day: 12
+
+time: 2017-${mouth}-${day}
+
+person:
+  name: 王海潮
+  age: 22
+  address: 上海
