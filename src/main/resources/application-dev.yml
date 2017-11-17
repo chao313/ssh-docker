@@ -3,6 +3,26 @@ server:
   port: 8081
   context-path: /chao
 
+## thymeleaf的默认配置
+#spring.thymeleaf.prefix=classpath:/templates/
+#spring.thymeleaf.suffix=.html
+#spring.thymeleaf.mode=HTML5
+#spring.thymeleaf.encoding=UTF-8
+#spring.thymeleaf.content-type=text/html
+spring:
+     thymeleaf:
+       prefix: classpath:/templates/
+       suffix: .html
+       encoding: utf-8
+       content-type: text/html
+       mode: HTML5
+       cache: false
+
+
+
+
+
+
 mouth: 11
 day: 12
 ##配置使用配置
