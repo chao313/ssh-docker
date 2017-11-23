@@ -101,6 +101,17 @@
             <version>4.1.6</version>
         </dependency>
 
+        <!--
+        redis依赖
+        需要在application加上
+        @EnableCaching
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-redis</artifactId>
+            <version>1.4.2.RELEASE</version>
+        </dependency>
+
     </dependencies>
 
 

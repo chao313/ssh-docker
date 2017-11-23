@@ -47,6 +47,11 @@ spring:
         ##ddl-auto: update 更新表结构
           ddl-auto: update
         show-sql: true
+    ##配置redis，可以没有密码
+     redis:
+       host: 192.168.1.38
+       password: 123456
+       port: 16379
 
 
 
