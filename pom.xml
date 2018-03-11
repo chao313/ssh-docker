@@ -121,6 +121,14 @@
             <version>1.3.8.RELEASE</version>
         </dependency>
 
+        <!--
+        添加ssh jar
+        -->
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <version>0.1.54</version>
+        </dependency>
     </dependencies>
 
 
