@@ -1,37 +1,33 @@
 package demo.spring.boot.ssh;
 
-import com.jcraft.jsch.JSchException;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import demo.spring.boot.demospringboot.DemoSpringBootApplication;
+import demo.spring.boot.demospringboot.command.options.stream.Base;
+import demo.spring.boot.demospringboot.util.SSHUtil;
+import demo.spring.boot.demospringboot.util.help.SSHResInfo;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(
+        classes = DemoSpringBootApplication.class)
 public class SSHLoginTest {
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        testSSH();
-    }
 
-    public static void testSSH() {
-        String host = "120.77.37.251";
-        Integer port = 22;
-        String user = "root";
-        String password = "Ys15005113872";
-        try {
-            //使用目标服务器机上的用户名和密码登陆
-            SSHHelper helper = new SSHHelper(host, port, user, password);
-            String command = "docker images ";
-            try {
-                SSHResInfo resInfo = helper.sendCmd(command);
-                System.out.println(resInfo.toString());
-                //System.out.println(helper.deleteRemoteFIleOrDir(command));
-                //System.out.println(helper.detectedFileExist(command));
-                helper.close();
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } catch (JSchException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    private static Logger LOGGER = LoggerFactory.getLogger(SSHLoginTest.class);
+    @Autowired
+    private SSHUtil sshUtil;
+
+
+    @Test
+    public void testSSH() {
+
+        String cmd = new Base().addOPtions(Base.options.__format) + " {{.Container}}";
+        SSHResInfo result = sshUtil.execute(cmd);
+        LOGGER.info("reslut:{}", result);
     }
 }

@@ -54,6 +54,11 @@ spring:
        port: 16379
 
 
+ssh:
+  host: 120.77.37.251
+  port: 22
+  user: root
+  password: Ys15005113872
 
 
 
