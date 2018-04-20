@@ -145,6 +145,12 @@
             <artifactId>lombok</artifactId>
             <version>1.16.16</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.docker-java</groupId>
+            <artifactId>docker-java</artifactId>
+            <version>3.0.6</version>
+        </dependency>
     </dependencies>
 
 

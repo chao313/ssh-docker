@@ -11,14 +11,23 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+import demo.spring.boot.demospringboot.command.options.stream.Base;
+import demo.spring.boot.demospringboot.command.options.stream.Create;
 import demo.spring.boot.demospringboot.command.options.stream.Images;
 import demo.spring.boot.demospringboot.command.options.stream.Inspect;
 import demo.spring.boot.demospringboot.command.options.stream.PS;
+import demo.spring.boot.demospringboot.command.options.stream.help.Env;
+import demo.spring.boot.demospringboot.command.options.stream.help.PortMap;
 import demo.spring.boot.demospringboot.util.SSHUtil;
 import demo.spring.boot.demospringboot.util.help.SSHResInfo;
 import demo.spring.boot.demospringboot.vo.ContainerVo;
 import demo.spring.boot.demospringboot.vo.ImageVo;
+import demo.spring.boot.demospringboot.vo.InfoVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.Info;
 
 /**
  * 2018/4/15    Created by   chao
@@ -64,11 +73,16 @@ public class DockerService {
     }
 
     /**
-     * 转换成ImageVo
+     * 获取ContainerVo
      */
-    public List<ContainerVo> getContainersRunning() throws IOException {
-        String cmd =
-                new PS().addOPtions(PS.options.__format) + "'{{.ID}}:{{.Image}}:{{.Command}}:{{.Status}}:{{.Ports}}:{{.Names}}'";
+    public List<ContainerVo> getContainers(List<PS.options> options) throws IOException {
+        PS ps = new PS();
+        if (null != options) {
+            options.stream().forEach(option -> {
+                ps.addOPtions(option);
+            });
+        }
+        String cmd = ps.addOPtions(PS.options.__format) + "'{{.ID}}:{{.Image}}:{{.Command}}:{{.Status}}:{{.Ports}}:{{.Names}}'";
         SSHResInfo resInfo = sshUtil.execute(cmd);
         LOGGER.info("原始数据:{}", resInfo.getOutRes());
         LineNumberReader reader = new LineNumberReader(new StringReader(resInfo.getOutRes()));
@@ -89,5 +103,71 @@ public class DockerService {
         return list;
     }
 
+    /**
+     * 获取正在运行的容器
+     */
+    public List<ContainerVo> getContainersRunning() throws IOException {
+        return this.getContainers(null);
+    }
+
+    /**
+     * 获取正在运行的容器
+     */
+    public List<ContainerVo> getContainersAll() throws IOException {
+        List<PS.options> options = new ArrayList<>();
+        options.add(PS.options._a);
+        return this.getContainers(options);
+    }
+
+    /**
+     * 创建容器
+     */
+    public SSHResInfo containerCreate(
+            @ApiParam(value = "镜像名字") String imageName,
+            @ApiParam(value = "端口号") List<PortMap> ports,
+            @ApiParam(value = "附加命令") List<String> cmds,
+            @ApiParam(value = "容器名字") String containerName,
+            @ApiParam(value = "主机名字") String hostName,
+            @ApiParam(value = "环境变量") List<Env> envs) {
+        Create create = new Create();
+        create.ContainerCreate(ports, cmds, containerName, hostName, envs, imageName);
+        String cmd = create.toString();
+        return sshUtil.execute(cmd);
+
+    }
+
+    public SSHResInfo containerCreate(String imageName, List<PortMap> ports, List<String> cmds, String containerName,
+                                      String hostName) {
+        return this.containerCreate(imageName, ports, cmds, containerName, hostName, null);
+
+    }
+
+    public SSHResInfo containerCreate(String imageName, List<PortMap> ports, List<String> cmds, String containerName) {
+        return this.containerCreate(imageName, ports, cmds, containerName, null, null);
+
+    }
+
+    public SSHResInfo containerCreate(String imageName, List<PortMap> ports, List<String> cmds) {
+        return this.containerCreate(imageName, ports, cmds, null, null, null);
+
+    }
+
+    public SSHResInfo containerCreate(String imageName, List<PortMap> ports) {
+        return this.containerCreate(imageName, ports, null, null, null, null);
+
+    }
+
+    public SSHResInfo containerCreate(String imageName) {
+        return this.containerCreate(imageName, null, null, null, null, null);
+
+    }
+
+
+//    public InfoVo getInfoVo(){
+//
+//        String cmd = new Base().toString();
+//        sshUtil.execute()
+//
+//    }
 
 }

@@ -36,6 +36,8 @@ public class SSHUtil {
 
     public SSHResInfo execute(String command) {
 
+        LOGGER.info("cmd:{}", command);
+
         SSHResInfo result = null;
         try {
             if (null == helper) {
