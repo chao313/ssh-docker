@@ -2,6 +2,7 @@ package demo.spring.boot.demospringboot.service.docker;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.async.ResultCallback;
+import com.github.dockerjava.api.command.AttachContainerCmd;
 import com.github.dockerjava.api.command.CreateContainerCmd;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InfoCmd;
@@ -23,12 +24,15 @@ import com.github.dockerjava.api.command.StopContainerCmd;
 import com.github.dockerjava.api.command.UnpauseContainerCmd;
 import com.github.dockerjava.api.command.VersionCmd;
 import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.Frame;
 import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.api.model.Info;
 import com.github.dockerjava.api.model.PullResponseItem;
 import com.github.dockerjava.api.model.PushResponseItem;
+import com.github.dockerjava.api.model.StreamType;
 import com.github.dockerjava.api.model.Version;
 import com.github.dockerjava.core.async.ResultCallbackTemplate;
+import com.github.dockerjava.core.command.AttachContainerResultCallback;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -252,6 +256,24 @@ public class DockerClientService {
                 = DockerClientUtil.getRemoteClient(dockerHost);
         UnpauseContainerCmd cmd = dockerClient.unpauseContainerCmd(containerId);
         cmd.exec();
+        LOGGER.info("result:{}", true);
+        return true;
+    }
+
+    /**
+     * unpause container
+     */
+    public Boolean attachContainerById(String dockerHost,
+                                       String containerId) {
+        DockerClient dockerClient
+                = DockerClientUtil.getRemoteClient(dockerHost);
+        AttachContainerCmd cmd = dockerClient.attachContainerCmd(containerId);
+        AttachContainerResultCallback resultCallback = new AttachContainerResultCallback();
+        resultCallback = cmd.exec(resultCallback);
+        byte[] payload = new byte[1024];
+        Frame frame = new Frame(StreamType.STDOUT, payload);
+        resultCallback.onNext(frame);
+
         LOGGER.info("result:{}", true);
         return true;
     }

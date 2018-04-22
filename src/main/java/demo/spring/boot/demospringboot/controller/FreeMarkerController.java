@@ -19,4 +19,9 @@ public class FreeMarkerController {
         map.put("person",personInstance);
         return "freeMarker";
     }
+
+    @GetMapping(value = "/websocket")
+    public String websocket(Map<String, Object> map) {
+        return "websocket";
+    }
 }

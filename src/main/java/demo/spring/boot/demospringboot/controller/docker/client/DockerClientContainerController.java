@@ -230,6 +230,54 @@ public class DockerClientContainerController {
         return response;
     }
 
+    @ApiOperation(value = "pause-container", notes = "docker pause")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful — 请求已完成"),
+            @ApiResponse(code = 500, message = "服务器不能完成请求")
+    })
+    @GetMapping(value = "/pause-container")
+    public Response<Boolean> pauseContainer(
+            @RequestParam(value = "docker-host") String dockerHost,
+            @RequestParam(value = "container-id") String containerId) {
+        Response<Boolean> response = new Response<>();
+        try {
+            Boolean result =
+                    clientService.pauseContainerById(dockerHost, containerId);
+            response.setCode(Code.System.OK);
+            response.setMsg(Code.System.SERVER_SUCCESS_MSG);
+            response.setContent(result);
+        } catch (Exception e) {
+            response.setCode(Code.System.FAIL);
+            response.setMsg(e.toString());
+            response.addException(e);
+        }
+        return response;
+    }
+
+    @ApiOperation(value = "unpause-container", notes = "docker pause")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful — 请求已完成"),
+            @ApiResponse(code = 500, message = "服务器不能完成请求")
+    })
+    @GetMapping(value = "/unpause-container")
+    public Response<Boolean> unpauseContainer(
+            @RequestParam(value = "docker-host") String dockerHost,
+            @RequestParam(value = "container-id") String containerId) {
+        Response<Boolean> response = new Response<>();
+        try {
+            Boolean result =
+                    clientService.unpauseContainerById(dockerHost, containerId);
+            response.setCode(Code.System.OK);
+            response.setMsg(Code.System.SERVER_SUCCESS_MSG);
+            response.setContent(result);
+        } catch (Exception e) {
+            response.setCode(Code.System.FAIL);
+            response.setMsg(e.toString());
+            response.addException(e);
+        }
+        return response;
+    }
+
 
 
 }
