@@ -8,6 +8,7 @@ import com.github.dockerjava.api.command.EventsCmd;
 import com.github.dockerjava.api.command.InfoCmd;
 import com.github.dockerjava.api.command.ListContainersCmd;
 import com.github.dockerjava.api.command.ListImagesCmd;
+import com.github.dockerjava.api.command.PullImageCmd;
 import com.github.dockerjava.api.command.RemoveContainerCmd;
 import com.github.dockerjava.api.command.StartContainerCmd;
 import com.github.dockerjava.api.command.StopContainerCmd;
@@ -144,4 +145,6 @@ public class DockerRemoteJavaTest {
         cmd.exec();
         LOGGER.info("result:{}", "true");
     }
+
+
 }

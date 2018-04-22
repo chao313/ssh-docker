@@ -29,9 +29,18 @@ public class DockerClientUtil {
     public static DockerClient getRemoteClient() {
         DefaultDockerClientConfig clientConfig =
                 DefaultDockerClientConfig.createDefaultConfigBuilder()
-                        .withRegistryUsername("root")
-                        .withRegistryPassword("Ys15005113872")
                         .withDockerHost("tcp://120.77.37.251:2375")
+                        .build();
+        DockerCmdExecFactory dockerCmdExecFactory = new JerseyDockerCmdExecFactory();
+        DockerClientImpl dockerClient = DockerClientImpl.getInstance(clientConfig);
+        dockerClient.withDockerCmdExecFactory(dockerCmdExecFactory);
+        return dockerClient;
+    }
+
+    public static DockerClient getRemoteClient(String dockerost) {
+        DefaultDockerClientConfig clientConfig =
+                DefaultDockerClientConfig.createDefaultConfigBuilder()
+                        .withDockerHost("tcp://" + dockerost + ":2375")
                         .build();
         DockerCmdExecFactory dockerCmdExecFactory = new JerseyDockerCmdExecFactory();
         DockerClientImpl dockerClient = DockerClientImpl.getInstance(clientConfig);
