@@ -126,17 +126,7 @@ public class DockerClientSrviceTest {
         while ((i = in.read(bytes)) != -1) {
             LOGGER.info("日志", new String(bytes));
         }
-
-
         resultCallback.awaitCompletion(3, TimeUnit.SECONDS);
     }
 
-    @Test
-    public void cmdAttach() {
-        Scanner scanner = new Scanner(System.in);
-        String cmd;
-        while (!(cmd = scanner.next()).equals("exit")) {
-
-        }
-    }
 }
