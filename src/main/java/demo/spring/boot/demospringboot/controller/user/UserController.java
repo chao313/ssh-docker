@@ -33,8 +33,8 @@ public class UserController {
     @ApiOperation(value = "注册新用户", notes = "注册新用户")
     @PostMapping(value = "/register")
     public Response<Boolean> register(
-            @RequestParam(value = "/docker-paas-id") String dockerPassId,
-            @RequestParam(value = "/password") String paswword) {
+            @RequestParam(value = "docker-paas-id") String dockerPassId,
+            @RequestParam(value = "password") String paswword) {
         Response<Boolean> response = new Response<>();
         try {
             if (null != userJpa.findFirstByDockerPassId(dockerPassId)) {
@@ -68,11 +68,11 @@ public class UserController {
     @ApiOperation(value = "验证id是否重复", notes = "验证id是否重复")
     @PostMapping(value = "/valid")
     public Response<Boolean> valid(
-            @RequestParam(value = "/docker-paas-id") String dockerPassId) {
+            @RequestParam(value = "docker-paas-id") String dockerPassId) {
         Response<Boolean> response = new Response<>();
         try {
             if (null != userJpa.findFirstByDockerPassId(dockerPassId)) {
-                response.setCode(Code.System.FAIL);
+                response.setCode(Code.System.OK);
                 response.setMsg("DockerPaaSId重复");
                 response.setContent(false);
             } else {
@@ -91,8 +91,8 @@ public class UserController {
     @ApiOperation(value = "登陆", notes = "登陆")
     @PostMapping(value = "/login")
     public Response<Boolean> valid(
-            @RequestParam(value = "/docker-paas-id") String dockerPassId,
-            @RequestParam(value = "/password") String password) {
+            @RequestParam(value = "docker-paas-id") String dockerPassId,
+            @RequestParam(value = "password") String password) {
         Response<Boolean> response = new Response<>();
         try {
             String salt = userJpa.findSaltDockerPassId(dockerPassId);

@@ -49,4 +49,25 @@ public class SSHUtil {
         }
         return result;
     }
+
+    /**
+     * 验证是否能够连接主机
+     */
+    public static Boolean valid(String hostIp, Integer port, String account, String password) {
+        LOGGER.info("验证主机登陆:hostIp:{}, port:{}, account:{}, password:{}", hostIp, port, account, password);
+        SSHHelper sshHelper;
+        try {
+            sshHelper = new SSHHelper(hostIp, port, account, password);
+            if (null != sshHelper) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            LOGGER.error("验证主机登陆异常：{}", e.getMessage(), e);
+            LOGGER.error("验证主机登陆异常:hostIp:{}, port:{}, account:{}, password:{}", hostIp, port, account, password);
+            return false;
+        }
+
+    }
 }
