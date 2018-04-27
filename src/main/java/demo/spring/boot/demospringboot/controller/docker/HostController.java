@@ -16,7 +16,6 @@ import demo.spring.boot.demospringboot.framework.Response;
 import demo.spring.boot.demospringboot.service.jpa.HostJpa;
 import demo.spring.boot.demospringboot.util.SSHUtil;
 import demo.spring.boot.demospringboot.vo.HostVo;
-import demo.spring.boot.demospringboot.vo.UserVo;
 import io.swagger.annotations.ApiParam;
 
 /**
@@ -99,7 +98,7 @@ public class HostController {
         } catch (Exception e) {
             response.setCode(Code.System.FAIL);
             response.setMsg(e.getMessage());
-            response.addException(e);
+         //   response.addException(e);
             LOGGER.info("验证主机 异常：", e.getMessage(), e);
         }
         return response;
