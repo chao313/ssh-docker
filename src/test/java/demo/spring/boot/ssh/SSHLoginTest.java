@@ -26,7 +26,7 @@ public class SSHLoginTest {
     @Test
     public void testSSH() {
 
-        String cmd = new Base().addOPtions(Base.options.__format) + " {{.Container}}";
+        String cmd = new Base().addOPtions(Base.options.__format) + " {{.ContainerResponse}}";
         SSHResInfo result = sshUtil.execute(cmd);
         LOGGER.info("reslut:{}", result);
     }

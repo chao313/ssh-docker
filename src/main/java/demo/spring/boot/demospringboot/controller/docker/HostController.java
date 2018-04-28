@@ -45,15 +45,23 @@ public class HostController {
                 response.setContent(false);
                 response.setMsg("ssh 无法登陆");
             } else {
-                HostVo vo = new HostVo();
-                vo.setAccount(account);
-                vo.setHostIp(hostIp);
-                vo.setPassword(password);
-                vo.setUserId(userId);
-                vo.setPort(port);
-                vo = hostJpa.save(vo);
-                response.setContent(vo == null ? false : true);
-                response.setCode(Code.System.OK);
+
+                if (false == SSHUtil.openRemoteApi(hostIp, port, account, password)) {
+                    //开启远程api失败
+                    response.setCode(Code.System.OK);
+                    response.setContent(false);
+                    response.setMsg("开启远程api失败");
+                } else {
+                    HostVo vo = new HostVo();
+                    vo.setAccount(account);
+                    vo.setHostIp(hostIp);
+                    vo.setPassword(password);
+                    vo.setUserId(userId);
+                    vo.setPort(port);
+                    vo = hostJpa.save(vo);
+                    response.setContent(vo == null ? false : true);
+                    response.setCode(Code.System.OK);
+                }
             }
         } catch (Exception e) {
             response.setCode(Code.System.FAIL);
@@ -156,6 +164,24 @@ public class HostController {
             response.setCode(Code.System.FAIL);
             response.setMsg(e.getMessage());
             response.addException(e);
+        }
+        return response;
+    }
+
+    @GetMapping(value = "/query-by-id")
+    public Response<HostVo> queryById(
+            @RequestParam(value = "id") Integer id) {
+        LOGGER.info("根据id查询宿主机");
+        Response<HostVo> response = new Response<>();
+        try {
+            HostVo vo = hostJpa.findOne(id);
+            response.setCode(Code.System.OK);
+            response.setContent(vo);
+        } catch (Exception e) {
+            response.setCode(Code.System.FAIL);
+            response.setMsg(e.getMessage());
+            response.addException(e);
+            LOGGER.info("根据id查询宿主机 异常：", e.getMessage(), e);
         }
         return response;
     }

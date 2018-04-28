@@ -70,4 +70,25 @@ public class SSHUtil {
         }
 
     }
+
+    /**
+     * 验证是否能够连接主机 && 重启docker
+     */
+    public static Boolean openRemoteApi(String hostIp, Integer port, String account, String password) {
+        LOGGER.info("开放docker宿主机:hostIp:{}, port:{}, account:{}, password:{}", hostIp, port, account, password);
+        SSHHelper sshHelper;
+        try {
+            sshHelper = new SSHHelper(hostIp, port, account, password);
+            String cmd = "echo '-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock' > /etc/default/docker";
+            SSHResInfo info = sshHelper.sendCmd(cmd);
+            cmd = "service docker restart ";
+            SSHResInfo restartInfo = sshHelper.sendCmd(cmd);
+            return info.isEmptySuccess() && restartInfo.isEmptySuccess();
+        } catch (Exception e) {
+            LOGGER.error("开放docker宿主机：{}", e.getMessage(), e);
+            LOGGER.error("开放docker宿主机:hostIp:{}, port:{}, account:{}, password:{}", hostIp, port, account, password);
+            return false;
+        }
+
+    }
 }

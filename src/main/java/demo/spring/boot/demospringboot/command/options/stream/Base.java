@@ -9,7 +9,7 @@ package demo.spring.boot.demospringboot.command.options.stream;
  * @description 显示 Docker 系统信息，包括镜像和容器数
  */
 public class Base {
-    String FORMAT = "容器数量{{.Container}} 运行数量{{.Running}} 暂停数量{{.Paused}} 停止数量{{.Stopped}}";
+    String FORMAT = "容器数量{{.ContainerResponse}} 运行数量{{.Running}} 暂停数量{{.Paused}} 停止数量{{.Stopped}}";
 
     public enum options {
         _f(" -f "),

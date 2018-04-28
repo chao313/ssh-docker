@@ -2,23 +2,28 @@ package demo.spring.boot.demospringboot.controller.docker.client;
 
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
-import com.github.dockerjava.api.command.InspectImageResponse;
 import com.github.dockerjava.api.model.Container;
-import com.github.dockerjava.api.model.Image;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.BeanParam;
 
+import demo.spring.boot.demospringboot.constant.AppEnum;
 import demo.spring.boot.demospringboot.framework.Code;
 import demo.spring.boot.demospringboot.framework.Response;
 import demo.spring.boot.demospringboot.service.docker.DockerClientService;
+import demo.spring.boot.demospringboot.vo.docker.inspect.ContainerResponse;
 import demo.spring.boot.demospringboot.vo.request.ContainerRequest;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -31,8 +36,55 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping(value = "/docker-client/container")
 public class DockerClientContainerController {
 
+    private static Logger LOGGER = LoggerFactory.getLogger(DockerClientContainerController.class);
+
     @Autowired
     private DockerClientService clientService;
+
+
+    @ApiOperation(value = "containers", notes = "是经过转换的响应")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successful — 请求已完成"),
+            @ApiResponse(code = 500, message = "服务器不能完成请求")
+    })
+    @GetMapping(value = "/containers-response")
+    public Response<List<ContainerResponse>> getContainerResponseList(
+            @RequestParam(value = "docker-host") String dockerHost,
+            @RequestParam(value = "all", required = false, defaultValue = "false") Boolean bool
+    ) {
+        Response<List<ContainerResponse>> response = new Response<>();
+        try {
+            List<Container> containers =
+                    clientService.getDockerContainersList(dockerHost, bool);
+            List<ContainerResponse> responses = new ArrayList<>();
+            containers.forEach(vo -> {
+                ContainerResponse responseVo = new ContainerResponse();
+                BeanUtils.copyProperties(vo, responseVo);
+                responses.add(responseVo);
+            });
+            responses.stream().forEach(vo -> {
+                List<String> newNames = new ArrayList<>();
+                Arrays.stream(vo.getNames()).forEach(name -> {
+                    name = name.substring(1);
+                    newNames.add(name);
+                });
+                vo.setNames(newNames.toArray(new String[0]));
+            });
+            responses.stream().forEach(vo -> {
+                String app = AppEnum.getApp(vo.getImage());
+                vo.setApp(app + ".png");
+            });
+            response.setCode(Code.System.OK);
+            response.setMsg(Code.System.SERVER_SUCCESS_MSG);
+            response.setContent(responses);
+        } catch (Exception e) {
+            response.setCode(Code.System.FAIL);
+            response.setMsg(e.toString());
+            response.addException(e);
+            LOGGER.error("异常：{}", e.getMessage(), e);
+        }
+        return response;
+    }
 
     @ApiOperation(value = "containers", notes = "docker ps")
     @ApiResponses(value = {
