@@ -27,7 +27,7 @@
         title: {
             text: 'docker宿主机的情况',
             subtext: '实时数据',
-            left: 'center',
+            left: 'left',
             textStyle: {
                 fontWeight: 'normal',              //标题颜色
                 color: 'white'
@@ -41,14 +41,14 @@
             // orient: 'vertical',
             // top: 'middle',
             bottom: 10,
-            left: 'center',
+            left: 'left',
             data: ['运行', '阻塞', '停止']
         },
         series: [
             {
                 type: 'pie',
                 radius: '65%',
-                center: ['50%', '60%'],
+                center: ['20%', '60%'],
                 selectedMode: 'single',
                 data: [
                     {
