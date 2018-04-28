@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>预览</title>
+    <script src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+</head>
+<style>
+    #main {
+        width: 1000px;
+        height: 400px;
+    }
+
+    html {
+        color: white;
+    }
+
+</style>
+<body>
+<div id="main"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+
+    option = {
+        title: {
+            text: 'docker宿主机的情况',
+            subtext: '实时数据',
+            left: 'center',
+            textStyle: {
+                fontWeight: 'normal',              //标题颜色
+                color: 'white'
+            }
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            // orient: 'vertical',
+            // top: 'middle',
+            bottom: 10,
+            left: 'center',
+            data: ['运行', '阻塞', '停止']
+        },
+        series: [
+            {
+                type: 'pie',
+                radius: '65%',
+                center: ['50%', '60%'],
+                selectedMode: 'single',
+                data: [
+                    {
+                        value: ${info.containersRunning},
+                        name: '运行',
+                        label: {
+                            normal: {
+                                formatter: [
+                                    '{title|{b}}{abg|}',
+                                    '  {param|参数}{valueHead|参数值}',
+                                    '{hr|}',
+                                    '  {key|宿主机系统}{value|${info.operatingSystem}} ',
+                                    '  {key|系统类型}{value|${info.osType}} ',
+                                    '  {key|宿主机位数}{value|${info.architecture}} ',
+                                    '  {key|docker版本}{value|${info.serverVersion}} ',
+                                    '  {key|images数量}{value|${info.images}} ',
+                                    '  {key|容器数量}{value|${info.containers}} ',
+                                    '  {key|运行容器的数量}{value|${info.containersRunning}} ',
+                                    '  {key|阻塞的容器数量}{value|${info.containersPaused}} ',
+                                    '  {key|停止的容器数量}{value|${info.containersStopped}} ',
+                                    '  {key|内存限制}{value|${info.memoryLimit?c}} ',
+                                    '  {key|内存size}{value|${info.memTotal}} ',
+                                    '  {key|驱动}{value|${info.driver}} ',
+                                    '  {key|日志驱动}{value|${info.loggingDriver}} ',
+                                    '  {key|docker根目录}{value|${info.dockerRootDir}} '
+                                ].join('\n'),
+                                backgroundColor: '#eee',
+                                borderColor: '#777',
+                                borderWidth: 1,
+                                borderRadius: 4,
+                                rich: {
+                                    title: {
+                                        color: '#eee',
+                                        align: 'center'
+                                    },
+                                    abg: {
+                                        backgroundColor: '#333',
+                                        width: '100%',
+                                        align: 'right',
+                                        height: 25,
+                                        borderRadius: [4, 4, 0, 0]
+                                    },
+                                    key: {
+                                        height: 20,
+                                        width: 100,
+                                        align: 'left'
+                                    },
+                                    param: {
+                                        color: '#333',
+                                        height: 24,
+                                        width: 40,
+                                        align: 'left'
+                                    },
+                                    hr: {
+                                        borderColor: '#777',
+                                        width: '100%',
+                                        borderWidth: 0.5,
+                                        height: 0
+                                    },
+                                    value: {
+                                        width: 100,
+                                        padding: [0, 20, 0, 30],
+                                        align: 'left'
+                                    },
+                                    valueHead: {
+                                        color: '#333',
+                                        width: 100,
+                                        padding: [0, 20, 0, 30],
+                                        align: 'center'
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {value: ${info.containersStopped}, name: '停止'},
+                    {value: ${info.containersPaused}, name: '阻塞'}
+                ],
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+    myChart.setOption(option);
+</script>
+</body>
+</html>

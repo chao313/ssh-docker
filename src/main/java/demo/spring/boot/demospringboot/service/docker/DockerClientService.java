@@ -59,6 +59,7 @@ public class DockerClientService {
      * 获取docker的info
      */
     public Info getDockerInfo(String dockerHost) {
+        LOGGER.info("连接主机ip:{}", dockerHost);
         DockerClient dockerClient
                 = DockerClientUtil.getRemoteClient(dockerHost);
         InfoCmd infoCmd = dockerClient.infoCmd();
@@ -71,6 +72,7 @@ public class DockerClientService {
      * 获取docker的vsersion
      */
     public Version getDockerVsersion(String dockerHost) {
+        LOGGER.info("连接主机ip:{}", dockerHost);
         DockerClient dockerClient
                 = DockerClientUtil.getRemoteClient(dockerHost);
         VersionCmd cmd = dockerClient.versionCmd();
