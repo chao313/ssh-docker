@@ -75,7 +75,7 @@ public class DockerClientContainerController {
                 vo.setApp(app + ".png");
 
                 //处理是否运行状态
-                if (vo.getStatus().contains("UP")) {
+                if (vo.getStatus().contains("Up")) {
                     vo.setRunning(true);
                 } else {
                     vo.setRunning(false);
