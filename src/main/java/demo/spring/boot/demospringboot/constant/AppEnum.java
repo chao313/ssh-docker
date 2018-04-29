@@ -13,7 +13,13 @@ public enum AppEnum {
     NODE("node"),
     PYTHON("python"),
     NULL("null"),
-    TOMCAT("tomcat"),;
+    TOMCAT("tomcat"),
+    ASP("asp"),
+    LINUX("linux"),
+    UBUNTU("ubuntu"),
+    REDHAT("redhat"),
+    CENTOS("centos"),
+    ;
     private String app;
 
     AppEnum(String app) {

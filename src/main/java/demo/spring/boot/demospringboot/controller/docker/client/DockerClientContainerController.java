@@ -73,6 +73,14 @@ public class DockerClientContainerController {
             responses.stream().forEach(vo -> {
                 String app = AppEnum.getApp(vo.getImage());
                 vo.setApp(app + ".png");
+
+                //处理是否运行状态
+                if (vo.getStatus().contains("UP")) {
+                    vo.setRunning(true);
+                } else {
+                    vo.setRunning(false);
+                }
+
             });
             response.setCode(Code.System.OK);
             response.setMsg(Code.System.SERVER_SUCCESS_MSG);

@@ -44,4 +44,6 @@ public class ContainerResponse implements Serializable {
 
     private String app;
 
+    private Boolean running;
+
 }
