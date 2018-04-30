@@ -1,5 +1,5 @@
 
-package demo.spring.boot.demospringboot.vo.docker.inspect;
+package demo.spring.boot.demospringboot.vo.response;
 
 import com.github.dockerjava.api.model.ContainerHostConfig;
 import com.github.dockerjava.api.model.ContainerNetworkSettings;

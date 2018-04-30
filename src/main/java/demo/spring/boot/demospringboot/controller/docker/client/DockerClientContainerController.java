@@ -23,7 +23,7 @@ import demo.spring.boot.demospringboot.constant.AppEnum;
 import demo.spring.boot.demospringboot.framework.Code;
 import demo.spring.boot.demospringboot.framework.Response;
 import demo.spring.boot.demospringboot.service.docker.DockerClientService;
-import demo.spring.boot.demospringboot.vo.docker.inspect.ContainerResponse;
+import demo.spring.boot.demospringboot.vo.response.ContainerResponse;
 import demo.spring.boot.demospringboot.vo.request.ContainerRequest;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
